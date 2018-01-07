@@ -1,0 +1,26 @@
+<assembly>
+
+  <id>conductr-bundle</id>
+
+  <formats>
+    <format>zip</format>
+  </formats>
+
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <outputFileNameMapping>
+        ${artifact.groupId}-${artifact.artifactId}-${artifact.version}${dashClassifier?}.${artifact.extension}
+      </outputFileNameMapping>
+    </dependencySet>
+  </dependencySets>
+
+  <fileSets>
+    <fileSet>
+      <outputDirectory>/bin</outputDirectory>
+      <directory>src/main/docker</directory>
+      <fileMode>0755</fileMode>
+    </fileSet>
+  </fileSets>
+
+</assembly>

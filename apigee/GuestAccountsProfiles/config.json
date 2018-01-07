@@ -1,0 +1,88 @@
+{
+  "configurations": [
+    {
+      "name": "dev",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "cloud-test",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-test",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "cloud-stage",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-stage",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "cloud-production",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-allure",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-symphony",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-oasis",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-equinox",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-constellation",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-harmony",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-edge",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    },
+    {
+      "name": "ship-serenade",
+      "policies": [],
+      "proxies": [],
+      "targets": []
+    }
+  ]
+}

@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.rccl.middleware</groupId>
+  <artifactId>guest-accounts-profiles</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <packaging>pom</packaging>
+
+  <modules>
+
+    <module>guest-accounts-profiles-api</module>
+    <module>guest-accounts-profiles-impl</module>
+
+  </modules>
+
+  <properties>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <skipUTs>false</skipUTs>
+    <skipITs>false</skipITs>
+    <skipJacocoAggregate>false</skipJacocoAggregate>
+    <jacoco.execs.directory>${project.basedir}/../target/jacoco</jacoco.execs.directory>
+    <jacoco.ut.exec>${jacoco.execs.directory}/jacoco.exec</jacoco.ut.exec>
+    <jacoco.it.exec>${jacoco.execs.directory}/jacoco-it.exec</jacoco.it.exec>
+    <jacoco.aggregate.exec>${jacoco.execs.directory}/jacoco-aggregate.exec</jacoco.aggregate.exec>
+    <sonar.jacoco.reportPath>${jacoco.aggregate.exec}</sonar.jacoco.reportPath>
+
+    <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
+    <maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
+    <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+    <maven.docker.plugin.version>0.22.1</maven.docker.plugin.version>
+    <maven.failsafe.plugin.version>2.20.1</maven.failsafe.plugin.version>
+    <maven.findbugs.plugin.version>3.0.5</maven.findbugs.plugin.version>
+    <maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
+    <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+    <maven.sonar.plugin.version>3.3.0.603</maven.sonar.plugin.version>
+    <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
+
+    <apache.lang.version>3.6</apache.lang.version>
+    <hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
+    <jaxb.api.version>2.1</jaxb.api.version>
+    <javax.el.version>3.0.1-b08</javax.el.version>
+    <junit.version>4.12</junit.version>
+    <lightbend.cinnamon.version>2.4.0</lightbend.cinnamon.version>
+    <lombok.version>1.16.18</lombok.version>
+    <lagom.version>1.3.8</lagom.version>
+    <middleware.optins.version>1.0.0-SNAPSHOT</middleware.optins.version>
+    <middleware.common.version>1.18.2</middleware.common.version>
+    <org.json.version>20170516</org.json.version>
+    <org.mockito.mockito-core.version>2.8.47</org.mockito.mockito-core.version>
+    <play.version>2.5.15</play.version>
+    <saaj.api.version>1.3.5</saaj.api.version>
+
+  </properties>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>microservices-nexus</id>
+      <name>Microservices Snapshot Repository</name>
+      <url>http://10.16.4.8:10118/repository/microservices-snapshot</url>
+    </snapshotRepository>
+
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>microservices-nexus</id>
+      <name>Microservices Release Repository</name>
+      <url>http://10.16.4.8:10118/repository/microservices-release</url>
+    </repository>
+ </distributionManagement>
+
+  <repositories>
+
+    <repository>
+      <id>lightbend-commercial</id>
+      <name>Lightbend Commercial Mirror</name>
+      <url>http://10.16.4.8:10118/repository/lightbendproxy/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+    </repository>
+
+        <repository>
+          <id>microservices-release</id>
+          <name>Microservices Release Repository</name>
+          <url>http://10.16.4.8:10118/repository/microservices-release</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+        </repository>
+
+        <repository>
+          <id>microservices-snapshot</id>
+          <name>Microservices Snapshot Repository</name>
+          <url>http://10.16.4.8:10118/repository/microservices-snapshot</url>
+          <releases>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+        </repository>
+
+     </repositories>
+
+  <pluginRepositories>
+
+    <pluginRepository>
+      <id>mesosphere-mirror</id>
+      <name>Mesosphere Repository Mirror</name>
+      <url>http://downloads.mesosphere.io/maven</url>
+    </pluginRepository>
+
+  </pluginRepositories>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-maven-plugin</artifactId>
+        <version>${lagom.version}</version>
+        <configuration>
+          <unmanagedServices>
+            <guest_accounts_profile_optins>http://dev1.api.rccl.com/v1</guest_accounts_profile_optins>
+          </unmanagedServices>
+          <cassandraEnabled>false</cassandraEnabled>
+          <kafkaEnabled>false</kafkaEnabled>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven.checkstyle.plugin.version}</version>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>false</failsOnError>
+          <linkXRef>false</linkXRef>
+          <failOnViolation>false</failOnViolation>
+          <includeTestSourceDirectory>false</includeTestSourceDirectory>
+          <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+          <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+          <outputFile>${project.basedir}/target/checkstyle-output.xml</outputFile>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <argLine>@{failsafeArgLine}</argLine>
+              <encoding>UTF-8</encoding>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>${maven.findbugs.plugin.version}</version>
+        <configuration>
+          <outputDirectory>${project.build.directory}/findbugs</outputDirectory>
+          <xmlOutput>true</xmlOutput>
+          <xmlOutputDirectory>target/findbugs</xmlOutputDirectory>
+          <threshold>Low</threshold>
+          <effort>Max</effort>
+          <failOnError>false</failOnError>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${maven.jacoco.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>default-pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <append>true</append>
+              <destFile>${jacoco.ut.exec}</destFile>
+              <skip>${skipUTs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-pre-integration-test</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+            <configuration>
+              <append>true</append>
+              <destFile>${jacoco.it.exec}</destFile>
+              <skip>${skipITs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-merge</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${jacoco.execs.directory}</directory>
+                  <includes>
+                    <include>jacoco.exec</include>
+                    <include>jacoco-it.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+              <destFile>${jacoco.aggregate.exec}</destFile>
+              <skip>${skipJacocoAggregate}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.ut.exec}</dataFile>
+              <outputDirectory>${jacoco.execs.directory}/ut</outputDirectory>
+              <skip>${skipUTs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-report-integration</id>
+            <goals>
+              <goal>report-integration</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.it.exec}</dataFile>
+              <outputDirectory>${jacoco.execs.directory}/it</outputDirectory>
+              <skip>${skipITs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-report-aggregate</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.aggregate.exec}</dataFile>
+              <outputDirectory>${jacoco.execs.directory}/aggregate</outputDirectory>
+              <skip>${skipJacocoAggregate}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.ut.exec}</dataFile>
+              <rules>
+                <rule>
+                  <element>CLASS</element>
+                  <excludes>
+                    <exclude>*Application</exclude>
+                    <exclude>*Test</exclude>
+                  </excludes>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>.0</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <skip>${skipUTs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-check-integration</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.it.exec}</dataFile>
+              <rules>
+                <rule>
+                  <element>CLASS</element>
+                  <excludes>
+                    <exclude>*Application</exclude>
+                    <exclude>*Test</exclude>
+                  </excludes>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>.0</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <skip>${skipITs}</skip>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-check-aggregate</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.aggregate.exec}</dataFile>
+              <rules>
+                <rule>
+                  <element>CLASS</element>
+                  <excludes>
+                    <exclude>*Application</exclude>
+                    <exclude>*Test</exclude>
+                  </excludes>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>.0</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+              <skip>${skipJacocoAggregate}</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
+        <configuration>
+          <show>private</show>
+          <nohelp>true</nohelp>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>${maven.sonar.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <argLine/>
+          <excludes>
+            <exclude>**/it/*.java</exclude>
+            <exclude>**/ft/*.java</exclude>
+          </excludes>
+          <forkCount>3</forkCount>
+          <reuseForks>true</reuseForks>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+  <dependencyManagement>
+
+    <dependencies>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-server_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.typesafe.play</groupId>
+        <artifactId>play-netty-server_2.11</artifactId>
+        <version>${play.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.xml</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-api_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-persistence-cassandra_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-kafka-broker_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${apache.lang.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-logback_2.11</artifactId>
+        <version>${lagom.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-integration-client_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.lagom</groupId>
+        <artifactId>lagom-javadsl-jackson_2.11</artifactId>
+        <version>${lagom.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${org.mockito.mockito-core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>${org.json.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+        <type>maven-plugin</type>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.xml.soap</groupId>
+        <artifactId>saaj-api</artifactId>
+        <version>${saaj.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.glassfish</groupId>
+        <artifactId>javax.el</artifactId>
+        <version>${javax.el.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate.validator.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.rccl.middleware</groupId>
+        <artifactId>guest-accounts-profiles-optins-api</artifactId>
+        <version>${middleware.optins.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.rccl.middleware</groupId>
+        <artifactId>middleware-common</artifactId>
+        <version>${middleware.common.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.cinnamon</groupId>
+        <artifactId>cinnamon-chmetrics-statsd-reporter_2.11</artifactId>
+        <version>${lightbend.cinnamon.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.cinnamon</groupId>
+        <artifactId>cinnamon-lagom_2.11</artifactId>
+        <version>${lightbend.cinnamon.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.cinnamon</groupId>
+        <artifactId>cinnamon-agent</artifactId>
+        <version>${lightbend.cinnamon.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.cinnamon</groupId>
+        <artifactId>cinnamon-opentracing-jaeger_2.11</artifactId>
+        <version>${lightbend.cinnamon.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.lightbend.cinnamon</groupId>
+        <artifactId>cinnamon-chmetrics-jvm-metrics_2.11</artifactId>
+        <version>${lightbend.cinnamon.version}</version>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+
+</project>

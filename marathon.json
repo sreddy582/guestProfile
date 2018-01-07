@@ -1,0 +1,112 @@
+{
+  "volumes": null,
+  "id": "guest-accounts/guest-accounts-profiles",
+  "cmd": null,
+  "args": null,
+  "user": null,
+  "env": {
+    "AKKA_PORT": "1342",
+    "CASSANDRA_USERNAME": {
+      "secret": "CASSANDRA_USERNAME"
+    },
+    "CASSANDRA_PASSWORD": {
+      "secret": "CASSANDRA_PASSWORD"
+    },
+    "CAS_CONTACT_POINT_ONE": "10.16.4.106",
+    "CAS_CONTACT_POINT_TWO": "10.16.7.47",
+    "CAS_CONTACT_POINT_THREE": "10.16.6.162",
+    "CAS_CONTACT_POINTS_PORT": "8042",
+    "CASSANDRA_REPLICATION_FACTOR": "3",
+    "GUEST_PROFILES_OPTINS": "http://dev1-int.api.rccl.com/v1",
+    "HTTP_PORT": "9022",
+    "JAVA_OPTS": "-Xmx512m -Xms384m -Djavax.net.ssl.keyStorePassword=password -Djavax.net.ssl.trustStorePassword=password -Djavax.net.ssl.keyStore=/etc/ssl/certs/clientkeystore.jks -Djavax.net.ssl.trustStore=/etc/ssl/certs/cacerts.jks"
+  },
+  "instances": 2,
+  "cpus": 0.1,
+  "mem": 2048,
+  "disk": 0,
+  "gpus": 0,
+  "executor": null,
+  "constraints": null,
+  "fetch": null,
+  "storeUrls": null,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "docker": {
+      "image": "[SET_BY_PIPELINES]",
+      "forcePullImage": true,
+      "privileged": true,
+      "portMappings": [
+        {
+          "containerPort": 9022,
+          "protocol": "tcp",
+          "servicePort": 0
+        }
+      ],
+      "network": "BRIDGE"
+    },
+    "volumes": [
+      {
+        "containerPath": "/etc/ssl/certs/ca-certificates.crt",
+        "hostPath": "/opt/mesosphere/active/python-requests/lib/python3.5/site-packages/requests/cacert.pem",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/etc/ssl/certs/clientkeystore.jks",
+        "hostPath": "/opt/mesosphere/certs/clientkeystore.jks",
+        "mode": "RW"
+      },
+      {
+        "containerPath": "/etc/ssl/certs/cacerts.jks",
+        "hostPath": "/opt/mesosphere/certs/cacerts.jks",
+        "mode": "RW"
+      }
+    ]
+  },
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/guestProfiles/health",
+      "gracePeriodSeconds": 10,
+      "intervalSeconds": 10,
+      "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 5,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "readinessChecks": null,
+  "dependencies": null,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "HAPROXY_GROUP": "[SET_BY_PIPELINES]",
+    "HAPROXY_0_VHOST": "[SET_BY_PIPELINES]",
+    "HAPROXY_0_PATH": "[SET_BY_PIPELINES]",
+    "HAPROXY_0_HTTP_BACKEND_PROXYPASS_PATH": "[SET_BY_PIPELINES]"
+  },
+  "acceptedResourceRoles": null,
+  "residency": null,
+  "secrets": {
+    "CASSANDRA_USERNAME": {
+      "source": "guest_profiles_cassandra_user"
+    },
+    "CASSANDRA_PASSWORD": {
+      "source": "guest_profiles_cassandra_password"
+    }
+  },
+  "taskKillGracePeriodSeconds": null,
+  "portDefinitions": [
+    {
+      "port": 0,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "requirePorts": false
+}

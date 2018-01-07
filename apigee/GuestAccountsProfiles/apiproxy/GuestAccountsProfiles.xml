@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="GuestAccountsProfiles">
+    <Basepaths>/v1/guestProfiles</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <Description>The Guest Accounts Profile service.</Description>
+    <DisplayName>GuestAccountsProfiles</DisplayName>
+    <Policies>
+        <Policy>FlowCallout.AddCORSHeaders</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec></Spec>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+    <validate>false</validate>
+</APIProxy>
